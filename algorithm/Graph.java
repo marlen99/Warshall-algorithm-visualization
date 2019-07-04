@@ -9,6 +9,15 @@ public class Graph{
             this.destination = destination;
         }
     }
+    public class Memento {
+        public String vertices;
+        public BoolMatrix matr;
+        public Memento(String vertices, BoolMatrix matr) {
+            matr = new BoolMatrix(matr);
+            this.vertices = new String(vertices);
+        }
+    }
+
     private String vertices;
     private BoolMatrix m;
 
@@ -50,6 +59,15 @@ public class Graph{
         return new BoolMatrix(m);
     }
 
+    public Memento save() {
+        return new Memento(vertices, m);
+    }
+
+    public void restore(Memento state) {
+        m = new BoolMatrix(state.matr);
+        vertices = new String(state.vertices);
+    }
+
     public String toString() {
         return m.toString();
     }
@@ -62,5 +80,12 @@ public class Graph{
             m.add(prev);
         } while(!m.equals(prev));
     }
-            
+
+    public boolean stepTransitiveClosure() {
+        BoolMatrix prev;
+        prev = m;
+        m = m.multiply(m);
+        m.add(prev);
+        return prev.equals(m);
+    }
 }

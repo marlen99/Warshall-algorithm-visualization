@@ -2,12 +2,18 @@ import java.util.*;
 
 class WarshallAlgorithm {
     private Graph g;
+    private Vector<Graph.Memento> history;
+    private int curState;
+    private boolean isCompleted;
 
     public WarshallAlgorithm(String edges) {
         setGraphData(edges);
     }
 
     public void setGraphData(String data) {
+        isCompleted = false;
+        curState = 0;
+        history = new Vector<Graph.Memento>();
         Scanner s = new Scanner(data);
         s.useDelimiter(System.lineSeparator());
         String token;
@@ -32,10 +38,43 @@ class WarshallAlgorithm {
             edges.add(new Graph.Edge(source, destination));
         }
         g = new Graph(alp.toString().toCharArray(), edges);
+        history.add(g.save());
     }
 
     public void transitiveClosure() {
         g.transitiveClosure();
+    }
+
+    public void stepUp() {
+        if(curState + 1 < history.size()) {
+             g.restore(history.elementAt(curState + 1));
+        }
+        else {
+            history.add(g.save());
+            g.stepTransitiveClosure();
+        }
+        ++curState;
+    }
+
+    public void stepDown() {
+        if(curState == 0)
+            return;
+        g.restore(history.elementAt(curState - 1));
+        --curState;
+    }
+
+    public void toStart() {
+        g.restore(history.elementAt(0));
+        curState = 0;
+    }
+
+    public void toFinalResult() {
+       g.restore(history.elementAt(history.size()-1));
+       if(!isCompleted) {
+           while(isCompleted = g.stepTransitiveClosure())
+               history.add(g.save());
+       }
+       curState = history.size() - 1;
     }
 
     public int verticesCount() {
