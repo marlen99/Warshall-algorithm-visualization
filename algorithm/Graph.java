@@ -46,6 +46,10 @@ public class Graph{
         return (Edge[])edges.toArray();
     }
 
+    public BoolMatrix getMatrix() {
+        return new BoolMatrix(m);
+    }
+
     public String toString() {
         return m.toString();
     }

@@ -38,8 +38,20 @@ class WarshallAlgorithm {
         g.transitiveClosure();
     }
 
+    public int verticesCount() {
+        return g.verticesCount();
+    }
+
+    public char getVertex(int Index) {
+        return g.getVertex(Index);
+    }
+
     public Graph.Edge[] getEdges() {
         return g.getEdges();
+    }
+
+    public BoolMatrix getMatrix() {
+        return g.getMatrix();
     }
 
     public String toString() {
