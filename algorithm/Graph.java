@@ -10,11 +10,17 @@ public class Graph{
         }
     }
     public class Memento {
-        public String vertices;
-        public BoolMatrix matr;
+        private String vertices;
+        private BoolMatrix matr;
         public Memento(String vertices, BoolMatrix matr) {
-            matr = new BoolMatrix(matr);
+            this.matr = new BoolMatrix(matr);
             this.vertices = new String(vertices);
+        }
+        public String getVertices() {
+            return vertices;
+        }
+        public BoolMatrix getMatrix() {
+            return new BoolMatrix(matr);
         }
     }
 
@@ -64,8 +70,8 @@ public class Graph{
     }
 
     public void restore(Memento state) {
-        m = new BoolMatrix(state.matr);
-        vertices = new String(state.vertices);
+        m = state.getMatrix();
+        vertices = state.getVertices();
     }
 
     public String toString() {

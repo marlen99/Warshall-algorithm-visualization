@@ -50,8 +50,8 @@ class WarshallAlgorithm {
              g.restore(history.elementAt(curState + 1));
         }
         else {
-            history.add(g.save());
             g.stepTransitiveClosure();
+            history.add(g.save());
         }
         ++curState;
     }
