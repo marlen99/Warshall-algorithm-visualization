@@ -50,7 +50,7 @@ class WarshallAlgorithm {
              g.restore(history.elementAt(curState + 1));
         }
         else {
-            g.stepTransitiveClosure();
+            isCompleted = g.stepTransitiveClosure();
             history.add(g.save());
         }
         ++curState;
@@ -71,10 +71,14 @@ class WarshallAlgorithm {
     public void toFinalResult() {
        g.restore(history.elementAt(history.size()-1));
        if(!isCompleted) {
-           while(isCompleted = g.stepTransitiveClosure())
+           while(!(isCompleted = g.stepTransitiveClosure()))
                history.add(g.save());
        }
        curState = history.size() - 1;
+    }
+
+    public boolean completed() {
+        return isCompleted;
     }
 
     public int verticesCount() {
