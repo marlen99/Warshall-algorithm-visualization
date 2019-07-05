@@ -39,6 +39,11 @@ public class BoolMatrix{
             matr[i] = matr[i] || m.matr[i];
     }
 
+    public void sub(BoolMatrix m) {
+        for(int i=0; i<matr.length; ++i)
+            matr[i] ^= m.matr[i];
+    }
+
     public BoolMatrix multiply(BoolMatrix m) {
         BoolMatrix res = new BoolMatrix(rowCount, m.columnCount);
         for(int i=0; i<rowCount; ++i){

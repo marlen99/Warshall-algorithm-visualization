@@ -50,7 +50,11 @@ class WarshallAlgorithm {
              g.restore(history.elementAt(curState + 1));
         }
         else {
+            if(isCompleted && curState + 1 == history.size())
+                return;
             isCompleted = g.stepTransitiveClosure();
+            if(isCompleted)
+                return;
             history.add(g.save());
         }
         ++curState;
