@@ -5,6 +5,8 @@ public class BoolMatrix{
     private boolean[] matr;
 
     public BoolMatrix(int rowCount, int columnCount) {
+        if(rowCount < 1 || columnCount < 1)
+            throw IllegalArgumentException();
         this.rowCount = rowCount;
         this.columnCount = columnCount;
         matr = new boolean[rowCount*columnCount];
@@ -45,6 +47,8 @@ public class BoolMatrix{
     }
 
     public BoolMatrix multiply(BoolMatrix m) {
+        if(columnCount != m.rowCount)
+            throw IllegalArgumentException();
         BoolMatrix res = new BoolMatrix(rowCount, m.columnCount);
         for(int i=0; i<rowCount; ++i){
             for(int j=0; j<res.columnCount; ++j){

@@ -15,7 +15,7 @@ class WarshallAlgorithm {
         curState = 0;
         history = new Vector<Graph.Memento>();
         Scanner s = new Scanner(data);
-        s.useDelimiter(System.lineSeparator());
+        s.useDelimiter("\n");
         String token;
         StringBuilder alp = new StringBuilder();
         Vector<Graph.Edge> edges = new Vector<Graph.Edge>();
@@ -37,6 +37,8 @@ class WarshallAlgorithm {
                 alp.append(destination);
             edges.add(new Graph.Edge(source, destination));
         }
+        if(s.hasNext())
+            throw new IllegalArgumentException();
         g = new Graph(alp.toString().toCharArray(), edges);
         history.add(g.save());
     }
