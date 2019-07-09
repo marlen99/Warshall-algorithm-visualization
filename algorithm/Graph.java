@@ -1,6 +1,8 @@
 import java.util.*;
+import java.util.logging.*;
 
 public class Graph{
+    private static Logger log = Logger.getLogger(Graph.class.getName());
     public static class Edge{
         public char source;
         public char destination;
@@ -41,6 +43,10 @@ public class Graph{
     }
 
     public void add(Edge edge) {
+        log.fine(String.format("Adding edge: %c %c", edge.source, edge.destination));
+        if(vertices.indexOf(edge.source) == -1 || vertices.indexOf(edge.destination) == -1) {
+            throw new IllegalArgumentException("Cannot add edge: one of the vertices isn't in the graph");
+        }
         m.set(vertices.indexOf(edge.source), vertices.indexOf(edge.destination), true);
     }
 
@@ -66,10 +72,12 @@ public class Graph{
     }
 
     public Memento save() {
+        log.fine("Saving memento");
         return new Memento(vertices, m);
     }
 
     public void restore(Memento state) {
+        log.fine("Restoring graph");
         m = state.getMatrix();
         vertices = state.getVertices();
     }
@@ -79,6 +87,7 @@ public class Graph{
     }
 
     public void transitiveClosure() {
+        log.fine("Doing all algorithm");
         BoolMatrix prev;
         do {
             prev = m;
@@ -88,6 +97,7 @@ public class Graph{
     }
 
     public boolean stepTransitiveClosure() {
+        log.fine("Doing one step");
         BoolMatrix prev;
         prev = m;
         m = m.multiply(m);

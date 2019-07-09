@@ -1,4 +1,3 @@
-
 public class BoolMatrix{
     private int rowCount;
     private int columnCount;
@@ -6,7 +5,7 @@ public class BoolMatrix{
 
     public BoolMatrix(int rowCount, int columnCount) {
         if(rowCount < 1 || columnCount < 1)
-            throw IllegalArgumentException();
+            throw new IllegalArgumentException("Matrix scales must be positive");
         this.rowCount = rowCount;
         this.columnCount = columnCount;
         matr = new boolean[rowCount*columnCount];
@@ -48,7 +47,7 @@ public class BoolMatrix{
 
     public BoolMatrix multiply(BoolMatrix m) {
         if(columnCount != m.rowCount)
-            throw IllegalArgumentException();
+            throw new IllegalArgumentException("Column count of first matrix must be equal to row count of second matrix");
         BoolMatrix res = new BoolMatrix(rowCount, m.columnCount);
         for(int i=0; i<rowCount; ++i){
             for(int j=0; j<res.columnCount; ++j){

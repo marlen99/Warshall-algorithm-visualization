@@ -1,6 +1,8 @@
 import java.util.*;
+import java.util.logging.*;
 
 class WarshallAlgorithm {
+    private static Logger log = Logger.getLogger(WarshallAlgorithm.class.getName());
     private Graph g;
     private Vector<Graph.Memento> history;
     private int curState;
@@ -11,6 +13,7 @@ class WarshallAlgorithm {
     }
 
     public void setGraphData(String data) {
+        log.fine("Starting parsing string to create Graph");
         isCompleted = false;
         curState = 0;
         history = new Vector<Graph.Memento>();
@@ -23,6 +26,7 @@ class WarshallAlgorithm {
         char source, destination;
         while(s.hasNext(" *[a-z] +[a-z] *")) {
             token = s.next(" *[a-z] +[a-z] *");
+            log.fine(String.format("Parsing token: %s", token));
             i = 0;
             while(Character.isSpaceChar(token.charAt(i)))
                 ++i;
@@ -37,8 +41,10 @@ class WarshallAlgorithm {
                 alp.append(destination);
             edges.add(new Graph.Edge(source, destination));
         }
-        if(s.hasNext())
-            throw new IllegalArgumentException();
+        if(s.hasNext()) {
+            IllegalArgumentException e = new IllegalArgumentException("Incorrect input data");
+            throw e;
+        }
         g = new Graph(alp.toString().toCharArray(), edges);
         history.add(g.save());
     }
@@ -48,6 +54,7 @@ class WarshallAlgorithm {
     }
 
     public void stepUp() {
+        log.fine("Going to next step");
         if(curState + 1 < history.size()) {
              g.restore(history.elementAt(curState + 1));
         }
@@ -63,6 +70,7 @@ class WarshallAlgorithm {
     }
 
     public void stepDown() {
+        log.fine("Going to previous step");
         if(curState == 0)
             return;
         g.restore(history.elementAt(curState - 1));
@@ -70,11 +78,13 @@ class WarshallAlgorithm {
     }
 
     public void toStart() {
+        log.fine("Going to starting step");
         g.restore(history.elementAt(0));
         curState = 0;
     }
 
     public void toFinalResult() {
+        log.fine("Going to final result");
        g.restore(history.elementAt(history.size()-1));
        if(!isCompleted) {
            while(!(isCompleted = g.stepTransitiveClosure()))
