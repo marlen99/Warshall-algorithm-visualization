@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.logging.*;
 
-class WarshallAlgorithm {
+public class WarshallAlgorithm {
     private static Logger log = Logger.getLogger(WarshallAlgorithm.class.getName());
     private Graph g;
     private Vector<Graph.Memento> history;
