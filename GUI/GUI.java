@@ -1,3 +1,5 @@
+import java.util.logging.*;
+
 import javax.swing.*;
 import javax.swing.filechooser.*;
 import java.awt.*;
@@ -14,12 +16,25 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultListenableGraph;
 
 public class GUI {
+    private static Logger log = Logger.getLogger(GUI.class.getName());
     public static void main(String[] args) {
-        MyForm win = new MyForm();
+        try {
+            LogManager.getLogManager().readConfiguration(
+                    Main.class.getResourceAsStream("../logging.properties"));
+        } catch (Exception e) {
+            System.err.println("Could not setup logger configuration: " + e.toString());
+        }
+        try{
+            MyForm win = new MyForm();
+        }
+        catch(Exception e) {
+            log.log(Level.SEVERE, "Error: ", e);
+        }
     }
 }
 
 class MyForm{
+    private static Logger log = Logger.getLogger(MyForm.class.getName());
     private String inputData = "";
     private boolean flagButton = false;
     private int numVertices = 0;
@@ -27,6 +42,7 @@ class MyForm{
     private JPanel gridAfter = new JPanel();
     private WarshallAlgorithm data;
     public MyForm(){
+        log.fine("Creating main window");
         JFrame frame  = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
@@ -110,6 +126,7 @@ class MyForm{
         fileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                log.fine("Choosing file");
                 JFileChooser chooser = new JFileChooser();
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
                                                                              "Text files", "txt");
@@ -165,11 +182,14 @@ class MyForm{
                             frame.getContentPane().repaint();
                             frame.pack();
                         }catch(IllegalArgumentException i){
+                            log.log(Level.INFO, "Exception: ", i);
                             JOptionPane.showMessageDialog(frame, "Wrong input data.");
                         }
                     } catch (FileNotFoundException ex) {
+                        log.log(Level.INFO, "Exception: ", ex);
                         ex.printStackTrace();
                     } catch (IOException ex) {
+                        log.log(Level.WARNING, "Exception: ", ex);
                         ex.printStackTrace();
                     }
                     
@@ -179,6 +199,7 @@ class MyForm{
         
         firstButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
+                log.fine("Input data entered");
                 JDialog dialog = createDialog(frame);
                 dialog.setVisible(true);
                 panelGraph.setVisible(flagButton);
@@ -214,6 +235,7 @@ class MyForm{
                     frame.getContentPane().repaint();
                     frame.pack();
                 }catch(IllegalArgumentException i){
+                    log.log(Level.INFO, "Exception: ", i);
                     JOptionPane.showMessageDialog(frame, "Wrong input data.");
                 }
                 
@@ -223,6 +245,7 @@ class MyForm{
         
         nextBut.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
+                log.fine("Next button pressed");
                 labelInitial.setText("Матрица на предыдущем шаге:");
                 labelTerminal.setText("Матрица после применения шага алгоритма:");
                 labelGraph.setText("Граф после применения шага алгоритма:");
@@ -254,6 +277,7 @@ class MyForm{
         
         prevBut.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
+                log.fine("Prev button pressed");
                 labelInitial.setText("Матрица на предыдущем шаге:");
                 labelTerminal.setText("Матрица после применения шага алгоритма:");
                 labelGraph.setText("Граф после применения шага алгоритма:");
@@ -286,6 +310,7 @@ class MyForm{
         
         finishBut.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
+                log.fine("Finish button pressed");
                 labelInitial.setText("Матрица инцидентности окончательного результата:");
                 labelGraph.setText("Граф окончательного результата:");
                 labelTerminal.setVisible(false);
@@ -308,6 +333,7 @@ class MyForm{
         
         initBut.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
+                log.fine("Init button pressed");
                 finishBut.setVisible(true);
                 nextBut.setVisible(true);
                 BoolMatrix m = new BoolMatrix(numVertices, numVertices);
@@ -340,6 +366,7 @@ class MyForm{
     }
     
     public void GraphDraw(JPanel mainPanel, Dimension DEFAULT_SIZE){
+        log.fine("Drawing graph");
         mainPanel.removeAll();
         mainPanel.revalidate();
         mainPanel.repaint();
@@ -383,11 +410,13 @@ class MyForm{
         layout.setMoveCircle(true);
         
         layout.execute(jgxAdapter.getDefaultParent());
+        log.fine("Finished drawing graph");
     }
     
     
     
     private void setMatrix(BoolMatrix matr, BoolMatrix otherMatr, int count, JPanel grid){
+        log.fine("Setting Matrix");
         grid.removeAll();
         grid.revalidate();
         grid.repaint();
@@ -440,6 +469,7 @@ class MyForm{
     }
     
     private JDialog createDialog(JFrame frame){
+        log.fine("Creating input dialog");
         JDialog dialog = new JDialog(frame);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setModal(true);
