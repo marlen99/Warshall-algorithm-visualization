@@ -15,12 +15,12 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultListenableGraph;
 
-public class GUI {
-    private static Logger log = Logger.getLogger(GUI.class.getName());
+public class Main {
+    private static Logger log = Logger.getLogger(Main.class.getName());
     public static void main(String[] args) {
         try {
             LogManager.getLogManager().readConfiguration(
-                    Main.class.getResourceAsStream("../logging.properties"));
+                                                         Main.class.getResourceAsStream("../logging.properties"));
         } catch (Exception e) {
             System.err.println("Could not setup logger configuration: " + e.toString());
         }
@@ -66,6 +66,10 @@ class MyForm{
         buttonPanel.add(firstButton, constraints1);
         pan.add(buttonPanel, BorderLayout.NORTH);
         
+        JPanel lastPanel = new JPanel(new BorderLayout());
+        lastPanel.setPreferredSize(new Dimension(1400, 60));
+        lastPanel.setMinimumSize(new Dimension(1400, 60));
+        lastPanel.setMaximumSize(new Dimension(1400, 60));
         JPanel pane = new JPanel(new GridLayout(1, 4, 150, 0));
         pane.setPreferredSize(new Dimension(1400, 30));
         pane.setMinimumSize(new Dimension(1400, 30));
@@ -78,17 +82,19 @@ class MyForm{
         pane.add(initBut);
         pane.add(finishBut);
         pane.add(nextBut);
-        pan.add(pane, BorderLayout.SOUTH);
+        lastPanel.add(new JLabel("Разработчики: Бергалиев Марлен, Прокопенко Надежда, Тян Екатерина"), BorderLayout.NORTH);
+        lastPanel.add(pane, BorderLayout.SOUTH);
+        pan.add(lastPanel, BorderLayout.SOUTH);
         
         JPanel panelMatrix = new JPanel();
         panelMatrix.setLayout(new BoxLayout(panelMatrix, BoxLayout.PAGE_AXIS));
-        panelMatrix.setPreferredSize(new Dimension(600, 740));
-        panelMatrix.setMinimumSize(new Dimension(600, 740));
-        panelMatrix.setMaximumSize(new Dimension(600, 740));
+        panelMatrix.setPreferredSize(new Dimension(600, 640));
+        panelMatrix.setMinimumSize(new Dimension(600, 640));
+        panelMatrix.setMaximumSize(new Dimension(600, 710));
         JScrollPane scroll = new JScrollPane(panelMatrix);
-        scroll.setPreferredSize(new Dimension(600, 740));
-        scroll.setMinimumSize(new Dimension(600, 740));
-        scroll.setMaximumSize(new Dimension(600, 740));
+        scroll.setPreferredSize(new Dimension(600, 640));
+        scroll.setMinimumSize(new Dimension(600, 640));
+        scroll.setMaximumSize(new Dimension(600, 710));
         pan.add(scroll, BorderLayout.EAST);
         
         JLabel labelInitial = new JLabel();
@@ -107,21 +113,25 @@ class MyForm{
         
         JPanel panelGraph = new JPanel();
         panelGraph.setLayout(new BoxLayout(panelGraph, BoxLayout.PAGE_AXIS));
-        panelGraph.setPreferredSize(new Dimension(790, 740));
-        panelGraph.setMinimumSize(new Dimension(790, 740));
-        panelGraph.setMaximumSize(new Dimension(790, 740));
-        pan.add(panelGraph, BorderLayout.WEST);
+        panelGraph.setPreferredSize(new Dimension(630, 640));
+        panelGraph.setMinimumSize(new Dimension(630, 640));
+        panelGraph.setMaximumSize(new Dimension(650, 710));
         
         JPanel paintedGraphPanel = new JPanel();
-        paintedGraphPanel.setPreferredSize(new Dimension(790, 710));
-        paintedGraphPanel.setMaximumSize(new Dimension(790, 710));
-        paintedGraphPanel.setMinimumSize(new Dimension(790, 710));
+        paintedGraphPanel.setPreferredSize(new Dimension(630, 590));
+        paintedGraphPanel.setMaximumSize(new Dimension(650, 650));
+        paintedGraphPanel.setMinimumSize(new Dimension(630, 590));
         
         JLabel labelGraph = new JLabel();
         labelGraph.setAlignmentX(Component.CENTER_ALIGNMENT);
-        labelGraph.setSize(790, 30);
+        labelGraph.setSize(630, 30);
+        JScrollPane scrollG = new JScrollPane(panelGraph);
+        scrollG.setPreferredSize(new Dimension(630, 590));
+        scrollG.setMinimumSize(new Dimension(630, 590));
+        scrollG.setMaximumSize(new Dimension(650, 650));
         panelGraph.add(labelGraph);
         panelGraph.add(paintedGraphPanel);
+        pan.add(scrollG, BorderLayout.WEST);
         
         fileButton.addActionListener(new ActionListener() {
             @Override
@@ -159,8 +169,9 @@ class MyForm{
                         prevBut.setVisible(flagButton);
                         labelTerminal.setVisible(flagButton);
                         gridAfter.setVisible(flagButton);
-                        pane.setVisible(flagButton);
+                        lastPanel.setVisible(flagButton);
                         scroll.setVisible(flagButton);
+                        scrollG.setVisible(flagButton);
                         try {
                             data = new WarshallAlgorithm(inputData);
                             data.setGraphData(inputData);
@@ -177,7 +188,7 @@ class MyForm{
                             tmpMatr.sub(data.getMatrix());
                             setMatrix(tmpMatr, data.getMatrix(), count, gridAfter);
                             numVertices = count;
-                            GraphDraw(paintedGraphPanel, new Dimension(790, 710));
+                            GraphDraw(paintedGraphPanel, new Dimension(630, 590));
                             frame.getContentPane().revalidate();
                             frame.getContentPane().repaint();
                             frame.pack();
@@ -212,8 +223,9 @@ class MyForm{
                 prevBut.setVisible(flagButton);
                 labelTerminal.setVisible(flagButton);
                 gridAfter.setVisible(flagButton);
-                pane.setVisible(flagButton);
+                lastPanel.setVisible(flagButton);
                 scroll.setVisible(flagButton);
+                scrollG.setVisible(flagButton);
                 try{
                     data = new WarshallAlgorithm(inputData);
                     data.setGraphData(inputData);
@@ -230,7 +242,7 @@ class MyForm{
                     tmpMatr.sub(data.getMatrix());
                     setMatrix(tmpMatr, data.getMatrix(), count, gridAfter);
                     numVertices = count;
-                    GraphDraw(paintedGraphPanel, new Dimension(790, 710));
+                    GraphDraw(paintedGraphPanel, new Dimension(630, 590));
                     frame.getContentPane().revalidate();
                     frame.getContentPane().repaint();
                     frame.pack();
@@ -266,7 +278,7 @@ class MyForm{
                 data.stepUp();
                 matr.sub(data.getMatrix());
                 setMatrix(matr, data.getMatrix(), numVertices, gridAfter);
-                GraphDraw(paintedGraphPanel, new Dimension(790, 710));
+                GraphDraw(paintedGraphPanel, new Dimension(630, 610));
                 WarshallAlgorithm tmp = new WarshallAlgorithm(inputData);
                 tmp.toFinalResult();
                 if(tmp.getMatrix().equals(data.getMatrix())){
@@ -299,7 +311,7 @@ class MyForm{
                 finishBut.setVisible(true);
                 setMatrix(matr, otherMatr, numVertices, gridAfter);
                 setMatrix(m, data.getMatrix(), numVertices, gridBefore);
-                GraphDraw(paintedGraphPanel, new Dimension(790, 710));
+                GraphDraw(paintedGraphPanel, new Dimension(630, 610));
                 WarshallAlgorithm tmp = new WarshallAlgorithm(inputData);
                 tmp.toStart();
                 if(tmp.getMatrix().equals(data.getMatrix())){
@@ -311,7 +323,9 @@ class MyForm{
         finishBut.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 log.fine("Finish button pressed");
-                labelInitial.setText("Матрица инцидентности окончательного результата:");
+
+                labelInitial.setText("Матрица смежности окончательного результата:");
+
                 labelGraph.setText("Граф окончательного результата:");
                 labelTerminal.setVisible(false);
                 gridAfter.setVisible(false);
@@ -326,7 +340,7 @@ class MyForm{
                     }
                 }
                 data.toFinalResult();
-                GraphDraw(paintedGraphPanel, new Dimension(790, 710));
+                GraphDraw(paintedGraphPanel, new Dimension(630, 610));
                 setMatrix(m, data.getMatrix(), numVertices, gridBefore);
             }
         });
@@ -344,9 +358,9 @@ class MyForm{
                 }
                 data.toStart();
                 setMatrix(m, data.getMatrix(), numVertices, gridBefore);
-                GraphDraw(paintedGraphPanel, new Dimension(790, 710));
+                GraphDraw(paintedGraphPanel, new Dimension(630, 610));
                 labelTerminal.setVisible(false);
-                labelInitial.setText("Матрица инцидентности начального состояния:");
+                labelInitial.setText("Матрица смежности начального состояния:");
                 labelGraph.setText("Граф начального состояния:");
                 prevBut.setVisible(false);
                 initBut.setVisible(false);
@@ -356,7 +370,8 @@ class MyForm{
         
         panelGraph.setVisible(flagButton);
         scroll.setVisible(flagButton);
-        pane.setVisible(flagButton);
+        scrollG.setVisible(flagButton);
+        lastPanel.setVisible(flagButton);
         pan.revalidate();
         pan.repaint();
         pan.setOpaque(true);
@@ -420,9 +435,9 @@ class MyForm{
         grid.removeAll();
         grid.revalidate();
         grid.repaint();
-        grid.setPreferredSize(new Dimension(600, 320));
+        grid.setPreferredSize(new Dimension(600, 270));
         grid.setMaximumSize(new Dimension(600, 320));
-        grid.setMinimumSize(new Dimension(600, 320));
+        grid.setMinimumSize(new Dimension(600, 270));
         grid.setBackground(Color.white);
         grid.setLayout(new GridLayout(count + 1, count + 1));
         grid.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -473,7 +488,6 @@ class MyForm{
         JDialog dialog = new JDialog(frame);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setModal(true);
-        dialog.setLocation(500, 200);
         dialog.setSize(500, 500);
         
         JTextArea area = new JTextArea(20, 30);
