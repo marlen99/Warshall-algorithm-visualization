@@ -44,7 +44,7 @@ public class WarshallTest {
         graph2.stepUp();
         assertEquals("Неверно посчитан следующий шаг", graph1.toString(), "0 1 1 0 \r\n" +
                 "0 0 1 1 \r\n" + "1 0 0 1 \r\n" + "1 1 0 0 \r\n");
-        assertEquals("", graph2.toString(), "0 1 1 \r\n0 1 1 \r\n0 1 1 \r\n");
+        assertEquals("Неверно посчитан следующий ша", graph2.toString(), "0 1 1 \r\n0 1 1 \r\n0 1 1 \r\n");
     }
     @Test
     public void test_stepDown() { //проверка перехода на шаг назад
