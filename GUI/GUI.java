@@ -323,7 +323,9 @@ class MyForm{
         finishBut.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 log.fine("Finish button pressed");
+
                 labelInitial.setText("Матрица смежности окончательного результата:");
+
                 labelGraph.setText("Граф окончательного результата:");
                 labelTerminal.setVisible(false);
                 gridAfter.setVisible(false);
